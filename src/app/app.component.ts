@@ -16,6 +16,7 @@ export class AppComponent  {
 	blockHeight=20;
 	svgHeight=100;
 	tempGene:Gene;
+	svgCrowBar:any;
 	constructor(private sanitizer:DomSanitizer){
 		this.maxLen=4000;
 		this.currentLen=0;
@@ -23,45 +24,38 @@ export class AppComponent  {
 			name:"",
 			color:"",
 			length:0,
-			direction:''
+			direction:'',
+			arrow:false
 		}
 		this.genes=[];
-/*		var gene1:Gene={ //Test Case
-			name:'testGene',
-			length:1500,
-			color:"red",
-			direction:'forward'
-		};
-		var gene2:Gene={
-			name:'testGene2',
-			length:2000,
-			color:"#123456",
-			direction:'forward'
-		};		
-		this.genes=[gene1,gene2]; */
 		this.svgItems=[];
 		for(var gene of this.genes)
 		{
 			this.blockCreate(gene);
 		};
+		this.svgCrowBar=document.createElement("script");
+		this.svgCrowBar.type="text/javascript";
+		this.svgCrowBar.src="svgCrowbar.js";
+		this.svgCrowBar.id="crowbar";
 
 
 	}
 	addGene()
 	{
-		if(this.tempGene.name && this.tempGene.color && this.tempGene.length && this.tempGene.direction)
+		if(this.tempGene.length && this.tempGene.direction)
 		{
 			this.genes.push(this.tempGene);
 			this.tempGene={
 				name:"",
 				color:"",
 				length:0,
-				direction:''
+				direction:'',
+				arrow:false,
 			}
 			this.refresh();
 		}
 		else{
-			alert('incorrect format')
+			alert('Length and Direction Required')
 		}
 	}
 	refresh()
@@ -75,12 +69,21 @@ export class AppComponent  {
 	}
 	blockCreate(gene:Gene)
 	{
-		if (gene.direction=='forward'){
+		if(!gene.arrow)
+		{
 			var len = (this.svgWidth*gene.length)/this.maxLen;
-			var blockLen= .9*len;
-			var arrowLen= .1*len;
-			var x1 =  this.currentLen;
-			var bWidth = blockLen;
+			var bWidth = .9*len;
+			var arrowLen= .1*len;	
+		}
+		else{
+			var len = (this.svgWidth*gene.length)/this.maxLen;
+			var bWidth = 0;
+			var arrowLen= len;
+		}
+		if (gene.direction=='forward'){
+
+
+			var x1 =  this.currentLen;			
 			var y1 = 50-this.blockHeight/2;
 			var bH=this.blockHeight;
 
@@ -96,7 +99,7 @@ export class AppComponent  {
 
 
 		}
-		else{
+		if(gene.direction=='backward'){
 			var len = (this.svgWidth*gene.length)/this.maxLen;
 			var arrowLen= .1*len;
 			var x1 =  this.currentLen + arrowLen;
@@ -113,8 +116,25 @@ export class AppComponent  {
 			var rotate="rotate(60 "+labelX+" "+labelY+")";
 
 			var arrow=aX1+','+aY1+' '+aX1+','+aY2+' '+aX2+','+50 ;
+		}
+		if(gene.direction=='nonCoding'){
+			var len = (this.svgWidth*gene.length)/this.maxLen;
+			var arrowLen= .1*len;
+			var x1 =  this.currentLen + arrowLen;
+			var bWidth = .9*len;
+			var y1 = 50-this.blockHeight/2;
+			var bH=this.blockHeight;
 
+			var aY1=50+this.blockHeight/2;
+			var aX1=this.currentLen+arrowLen;
+			var aX2=this.currentLen;
+			var aY2=50-this.blockHeight/2;
+			var labelX=x1+bWidth/2;
+			var labelY=aY1+bH;
+			var rotate="rotate(60 "+labelX+" "+labelY+")";
 
+			var arrow=aX1+','+aY1+' '+aX1+','+aY2+' '+aX2+','+50 ;
+			gene.color='transparent'
 		}
 		var block:Block={
 			name:gene.name,
@@ -136,6 +156,15 @@ export class AppComponent  {
 		this.genes.splice(i,1);
 		this.refresh();
 	}
+	SVGdownload(){
+		document.getElementsByTagName("head")[0].appendChild(this.svgCrowBar);
+		var element = document.getElementById("crowbar");
+		element.parentNode.removeChild(element);
+		var link = document.getElementsByClassName("svg-crowbar")[0];
+		link.parentNode.removeChild(link);
+
+
+	}
 }
 
 
@@ -144,6 +173,7 @@ export interface Gene{
 	length:number;
 	color:string;
 	direction:string;
+	arrow:boolean;
 
 }
 
