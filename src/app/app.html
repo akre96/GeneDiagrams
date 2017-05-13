@@ -1,21 +1,32 @@
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12 center">
-			<h1>Gene Figure Creator</h1>
+			<h1>Gene Figure Creator</h1><hr><br>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-12 center">
 			<svg #mySVG id="mySVG" width="800" height="400">
+				<filter id="drop-shadow">
+				  <feGaussianBlur in="SourceAlpha" stdDeviation="2.0"/>
+				  <feOffset dx="0" dy="4" result="offsetblur"/>
+				  <feFlood flood-color="rgba(0,0,0,0.3)"/>
+				  <feComposite in2="offsetblur" operator="in"/>
+				  <feMerge>
+				    <feMergeNode/>
+				    <feMergeNode in="SourceGraphic"/>
+				  </feMerge>
+				</filter>			
 				<line x1="0" y1="50" x2="800" y2="50" style="stroke:black;stroke-width:2" />
 				
-				<rect *ngFor="let block of svgItems" [attr.x]='block.x1' [attr.y]='block.y1' [attr.height]='block.bH' [attr.width]='block.bWidth' [attr.style]=block.color/>
-				<polygon *ngFor="let block of svgItems" [attr.points]='block.arrow' [attr.style]=block.color />
+				<rect *ngFor="let block of svgItems" class="block" [attr.x]='block.x1' [attr.y]='block.y1' [attr.height]='block.bH' [attr.width]='block.bWidth' [attr.style]=block.color/>
+				<polygon *ngFor="let block of svgItems" [attr.points]='block.arrow' class="" [attr.style]=block.color />
 				<text *ngFor="let block of svgItems" [attr.x]='block.labelX' [attr.y]='block.labelY' fill="black" [attr.transform]='block.rotate'>{{block.name}}</text>
 				
 			</svg>
 			<br>
-			<button class="btn-info btn" (click)="SVGdownload()">Download</button>
+			<button class="btn-info btn" (click)="SVGdownload()">Download</button><br>
+			<p><strong>NOTE: To use in PowerPoint, convert SVG to PDF here: <a href="https://cloudconvert.com/svg-to-pdf">https://cloudconvert.com/svg-to-pdf</a></strong></p>
 		</div>
 	</div>
 <hr><br>

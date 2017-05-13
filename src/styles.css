@@ -5817,6 +5817,11 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+body svg .block {
+  fill: #94d31b;
+  -webkit-filter: drop-shadow(0 1px 10px rgba(113, 158, 206, 0.8));
+  filter: url(#drop-shadow); }
+
 .center {
   text-align: center; }
 
