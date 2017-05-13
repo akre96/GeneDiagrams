@@ -38,6 +38,40 @@
 </div>
 <br>
 	<div class="row center" *ngFor="let gene of genes; let i = index" >
+		<div *ngIf="edit==i">
+		<div class="col-xs-2">
+			<div class="input-group">
+				<input type="text" [(ngModel)]="genes[i].name" placeholder="Gene" class="form-control">
+			</div>
+		</div>
+		<div class="col-xs-2">
+			<div class="input-group">
+				<input type="text" [(ngModel)]="genes[i].length" placeholder="Length" class="form-control">
+			</div>
+		</div>
+		<div class="col-xs-2">
+			<div class="input-group">
+				<input type="text" [(ngModel)]="genes[i].color" placeholder="Color" class="form-control">
+			</div>
+		</div>
+		<div class="col-xs-2">
+			<div class="input-group">
+				<label for="direction">Direction</label><br>
+				<input type="radio" [(ngModel)]="genes[i].direction" name="directionUD" value="forward"  checked/> Forward 
+				<input type="radio" [(ngModel)]="genes[i].direction" name="directionUD" value="backward" /> Backward
+				<input type="radio" [(ngModel)]="genes[i].direction" name="directionUD" value="nonCoding" /> Non Coding
+			</div>
+		</div>
+		<div class="col-xs-1">
+			<label for="arrow">Arrow Only</label>
+			<input type="checkbox" [(ngModel)]="genes[i].arrow" name="arrow" value="true" />
+		</div>
+		<div class="col-xs-1">
+			<button class="btn btn-info" (click)="refresh()">Update</button>
+		</div>				
+		</div>
+		<div *ngIf="edit!=i">
+			
 		
 		<div class="col-xs-2">
 			<div class="input-group">
@@ -61,8 +95,10 @@
 				<p><strong>Direction:</strong> {{gene.direction}}</p>
 			</div>
 		</div>
-		<div class="col-xs-1">
-			<button (click)="deleteBlock(i)" class="btn btn-danger delBtn">Delete</button>
+		<div class="col-xs-4">
+			<button (click)="deleteBlock(i)" class="btn btn-danger">Delete</button>
+			<button class="btn btn-info" (click)="editBlock(i)">Edit</button>
+		</div>
 		</div>
 	</div>
 	<br><br>
@@ -100,4 +136,14 @@
 		</div>	
 
 	</div>	
+</div>
+<br><br>
+<hr>
+<div class="container-fluid">
+	<div class="row footer">
+		<div class="col-xs-12">
+			<p>&#169; Samir Akre 2017</p>
+			<a href="www.samirakre.com">www.samirakre.com</a>
+		</div>
+	</div>
 </div>

@@ -17,6 +17,7 @@ export class AppComponent  {
 	svgHeight=100;
 	tempGene:Gene;
 	svgCrowBar:any;
+	edit:number;
 	constructor(private sanitizer:DomSanitizer){
 		this.maxLen=4000;
 		this.currentLen=0;
@@ -66,6 +67,7 @@ export class AppComponent  {
 		{
 			this.blockCreate(gene);
 		};
+		this.edit=-1;
 	}
 	blockCreate(gene:Gene)
 	{
@@ -155,6 +157,10 @@ export class AppComponent  {
 	deleteBlock(i:number){
 		this.genes.splice(i,1);
 		this.refresh();
+	}
+	editBlock(i)
+	{
+		this.edit=i;
 	}
 	SVGdownload(){
 		document.getElementsByTagName("head")[0].appendChild(this.svgCrowBar);

@@ -61,6 +61,7 @@ var AppComponent = (function () {
             this.blockCreate(gene);
         }
         ;
+        this.edit = -1;
     };
     AppComponent.prototype.blockCreate = function (gene) {
         if (!gene.arrow) {
@@ -137,6 +138,9 @@ var AppComponent = (function () {
     AppComponent.prototype.deleteBlock = function (i) {
         this.genes.splice(i, 1);
         this.refresh();
+    };
+    AppComponent.prototype.editBlock = function (i) {
+        this.edit = i;
     };
     AppComponent.prototype.SVGdownload = function () {
         document.getElementsByTagName("head")[0].appendChild(this.svgCrowBar);
