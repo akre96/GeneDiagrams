@@ -158,10 +158,7 @@ export class AppComponent  {
 	}
 	SVGdownload(){
 		document.getElementsByTagName("head")[0].appendChild(this.svgCrowBar);
-		var element = document.getElementById("crowbar");
-		element.parentNode.removeChild(element);
-		var link = document.getElementsByClassName("svg-crowbar")[0];
-		link.parentNode.removeChild(link);
+
 
 
 	}
