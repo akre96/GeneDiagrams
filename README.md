@@ -1,6 +1,6 @@
 # Gene Circuit Drawer
-
-This angular app is intended help create gene circuit diagrams
+This application is designed to make the process of drawing Gene Circuits easier and to scale.
+This project was created for and funded by the Mills Lab at UC-Davis.
 
 
 Sincerely,
