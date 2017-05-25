@@ -5834,3 +5834,17 @@ body svg .block {
 
 .footer {
   text-align: center; }
+  .footer p, .footer a {
+    text-align: center; }
+
+/* centered columns styles */
+.row-centered {
+  text-align: center; }
+
+.col-centered {
+  display: inline-block;
+  float: none;
+  /* reset the text-align */
+  text-align: left;
+  /* inline-block space fix */
+  margin-right: -4px; }

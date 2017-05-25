@@ -1,12 +1,12 @@
-<div class="container">
-	<div class="row">
-		<div class="col-xs-12 center">
-			<h1>Gene Figure Creator</h1><hr><br>
+<div class="container-fluid">
+	<div class="row row-centered">
+		<div class="col-centered col-xs-12 center">
+			<h1 class="center">Gene Figure Creator</h1><hr><br>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row row-centered">
 		<div class="col-xs-12 center">
-			<svg #mySVG id="mySVG" width="800" height="400">
+			<svg #mySVG id="mySVG" width="800" height="400" class="center">
 				<filter id="drop-shadow">
 				  <feGaussianBlur in="SourceAlpha" stdDeviation="2.0"/>
 				  <feOffset dx="0" dy="4" result="offsetblur"/>
@@ -28,14 +28,18 @@
 			<button class="btn-info btn" (click)="SVGdownload()">Download</button><br>
 			<p><strong>NOTE: To use in PowerPoint, convert SVG to PDF here: <a href="https://cloudconvert.com/svg-to-pdf">https://cloudconvert.com/svg-to-pdf</a></strong></p>
 		</div>
+		<div class="col-xs-4 col-md-2 col-centered">
+			<input class="center btn" type="file" id="files" (change)="onChange($event)" />
+			<output id="list" ></output>
+		</div>
 	</div>
 <hr><br>
 
-<div class="row">
-	<div class="col-xs-4">
+<div class="row row-centered">
+	<div class="col-centered col-xs-4">
 
 		<div class="input-group">
-			<label for="maxLen">Max Length</label>
+			<label for="maxLen">Max Length (Base Pairs)</label>
 			<input [(ngModel)]="maxLen" name="maxLen" type="text" class="form-control">			
 		</div>
 		<div class="input-group">
@@ -43,29 +47,29 @@
 			<input [(ngModel)]="blockHeight" name="blockHeight" type="text" class="form-control">			
 		</div>
 	</div>
-	<div class="col-xs-4">
+	<div class="col-centered col-xs-4">
 		<button class="btn btn-info reBtn" (click)="refresh()">Reload Image</button>
 	</div>
 </div>
 <br>
-	<div class="row center" *ngFor="let gene of genes; let i = index" >
-		<div *ngIf="edit==i">
-		<div class="col-xs-2">
+	<div class="container-fluid" *ngFor="let gene of genes; let i = index" >
+		<div class="row row-centered" *ngIf="edit==i">
+		<div class="col-centered col-xs-2">
 			<div class="input-group">
 				<input type="text" [(ngModel)]="genes[i].name" placeholder="Gene" class="form-control">
 			</div>
 		</div>
-		<div class="col-xs-2">
+		<div class="col-centered col-xs-2">
 			<div class="input-group">
 				<input type="text" [(ngModel)]="genes[i].length" placeholder="Length" class="form-control">
 			</div>
 		</div>
-		<div class="col-xs-2">
+		<div class="col-centered col-xs-2">
 			<div class="input-group">
 				<input type="text" [(ngModel)]="genes[i].color" placeholder="Color" class="form-control">
 			</div>
 		</div>
-		<div class="col-xs-2">
+		<div class="col-centered col-xs-2">
 			<div class="input-group">
 				<label for="direction">Direction</label><br>
 				<input type="radio" [(ngModel)]="genes[i].direction" name="directionUD" value="forward"  checked/> Forward 
@@ -73,64 +77,65 @@
 				<input type="radio" [(ngModel)]="genes[i].direction" name="directionUD" value="nonCoding" /> Non Coding
 			</div>
 		</div>
-		<div class="col-xs-1">
+		<div class="col-centered col-xs-1">
 			<label for="arrow">Arrow Only</label>
 			<input type="checkbox" [(ngModel)]="genes[i].arrow" name="arrow" value="true" />
 		</div>
-		<div class="col-xs-1">
+		<div class="col-centered col-xs-1">
 			<button class="btn btn-info" (click)="refresh()">Update</button>
 		</div>				
 		</div>
-		<div *ngIf="edit!=i">
+		<div class="row row-centered" *ngIf="edit!=i">
 			
 		
-		<div class="col-xs-2">
+		<div class="col-centered col-xs-2 col-sm-3">
 			<div class="input-group">
 				<p><strong>Gene:</strong> {{gene.name}}</p>
 			</div>	
 		</div>
 
-		<div class="col-xs-2">
+		<div class="col-centered col-xs-2">
 			<div class="input-group">
 				<p><strong>Length:</strong> {{gene.length}}</p>
 			</div>
 		</div>
 
-		<div class="col-xs-2">
+		<div class="col-centered col-xs-2">
 			<div class="input-group">
 				<p><strong>Color:</strong> {{gene.color}}</p>
 			</div>
 		</div>
-		<div class="col-xs-2">
+		<div class="col-centered col-xs-2">
 			<div class="input-group">
 				<p><strong>Direction:</strong> {{gene.direction}}</p>
 			</div>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-centered col-xs-4 col-sm-2">
 			<button (click)="deleteBlock(i)" class="btn btn-danger">Delete</button>
 			<button class="btn btn-info" (click)="editBlock(i)">Edit</button>
 		</div>
 		</div>
+		<hr>
 	</div>
 	<br><br>
-	<div class="row">
+	<div class="row row-centered">
 
-		<div class="col-xs-2">
+		<div class="col-centered col-xs-2">
 			<div class="input-group">
 				<input type="text" [(ngModel)]="tempGene.name" placeholder="Gene" class="form-control">
 			</div>
 		</div>
-		<div class="col-xs-2">
+		<div class="col-centered col-xs-2">
 			<div class="input-group">
 				<input type="text" [(ngModel)]="tempGene.length" placeholder="Length" class="form-control">
 			</div>
 		</div>
-		<div class="col-xs-2">
+		<div class="col-centered col-xs-2">
 			<div class="input-group">
 				<input type="text" [(ngModel)]="tempGene.color" placeholder="Color" class="form-control">
 			</div>
 		</div>
-		<div class="col-xs-2">
+		<div class="col-centered col-xs-2">
 			<div class="input-group">
 				<label for="direction">Direction</label><br>
 				<input type="radio" [(ngModel)]="tempGene.direction" name="direction" value="forward"  checked/> Forward 
@@ -138,11 +143,11 @@
 				<input type="radio" [(ngModel)]="tempGene.direction" name="direction" value="nonCoding" /> Non Coding
 			</div>
 		</div>
-		<div class="col-xs-1">
+		<div class="col-centered col-xs-1">
 			<label for="arrow">Arrow Only</label>
 			<input type="checkbox" [(ngModel)]="tempGene.arrow" name="arrow" value="true" />
 		</div>
-		<div class="col-xs-1">
+		<div class="col-centered col-xs-1">
 			<button class="btn btn-info" (click)="addGene()">Add</button>
 		</div>	
 
@@ -152,9 +157,9 @@
 <hr>
 <div class="container-fluid">
 	<div class="row footer">
-		<div class="col-xs-12">
-			<p>&#169; Samir Akre 2017</p>
-			<a href="www.samirakre.com">www.samirakre.com</a>
+		<div class="col-centered col-xs-12">
+			<p>&#169; Samir Akre 2017 <br><a href="www.samirakre.com">www.samirakre.com</a></p>
+			
 		</div>
 	</div>
 </div>
