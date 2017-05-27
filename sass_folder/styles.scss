@@ -36,6 +36,16 @@ svg{
 		text-align: center;
 	}
 }
+.errM
+{
+	border:1px solid $brand-danger;
+	h3,p
+	{
+		color:$brand-danger;
+	}
+	border-radius:10px;
+	padding:10px;
+}
 /* centered columns styles */
 .row-centered {
     text-align:center;

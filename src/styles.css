@@ -5837,6 +5837,13 @@ body svg .block {
   .footer p, .footer a {
     text-align: center; }
 
+.errM {
+  border: 1px solid #d9534f;
+  border-radius: 10px;
+  padding: 10px; }
+  .errM h3, .errM p {
+    color: #d9534f; }
+
 /* centered columns styles */
 .row-centered {
   text-align: center; }

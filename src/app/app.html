@@ -1,165 +1,202 @@
 <div class="container-fluid">
-	<div class="row row-centered">
-		<div class="col-centered col-xs-12 center">
-			<h1 class="center">Gene Figure Creator</h1><hr><br>
-		</div>
-	</div>
-	<div class="row row-centered">
-		<div class="col-xs-12 center">
-			<svg #mySVG id="mySVG" width="800" height="400" class="center">
-				<filter id="drop-shadow">
-				  <feGaussianBlur in="SourceAlpha" stdDeviation="2.0"/>
-				  <feOffset dx="0" dy="4" result="offsetblur"/>
-				  <feFlood flood-color="rgba(0,0,0,0.3)"/>
-				  <feComposite in2="offsetblur" operator="in"/>
-				  <feMerge>
-				    <feMergeNode/>
-				    <feMergeNode in="SourceGraphic"/>
-				  </feMerge>
-				</filter>			
-				<line x1="0" y1="50" x2="800" y2="50" style="stroke:black;stroke-width:2" />
-				
-				<rect *ngFor="let block of svgItems" class="block" [attr.x]='block.x1' [attr.y]='block.y1' [attr.height]='block.bH' [attr.width]='block.bWidth' [attr.style]=block.color/>
-				<polygon *ngFor="let block of svgItems" [attr.points]='block.arrow' [attr.style]=block.color />
-				<text *ngFor="let block of svgItems" [attr.x]='block.labelX' [attr.y]='block.labelY' fill="black" [attr.transform]='block.rotate'>{{block.name}}</text>
-				
-			</svg>
-			<br>
-			<button class="btn-info btn" (click)="SVGdownload()">Download</button><br>
-			<p><strong>NOTE: To use in PowerPoint, convert SVG to PDF here: <a href="https://cloudconvert.com/svg-to-pdf">https://cloudconvert.com/svg-to-pdf</a></strong></p>
-		</div>
-		<div class="col-xs-4 col-md-2 col-centered">
-			<input class="center btn" type="file" id="files" (change)="onChange($event)" />
-			<output id="list" ></output>
-		</div>
-	</div>
-<hr><br>
+    <div class="row row-centered">
+        <div class="col-centered col-xs-12 center">
+            <h1 class="center">Gene Figure Creator</h1>
+            <hr>
+            <br>
+        </div>
+    </div>
+    <div class="row row-centered">
+        <div class="col-xs-12 center">
 
-<div class="row row-centered">
-	<div class="col-centered col-xs-4">
+            <!-- SVG image generated here -->
 
-		<div class="input-group">
-			<label for="maxLen">Max Length (Base Pairs)</label>
-			<input [(ngModel)]="maxLen" name="maxLen" type="text" class="form-control">			
-		</div>
-		<div class="input-group">
-			<label for="blockHeight">Block Height</label>
-			<input [(ngModel)]="blockHeight" name="blockHeight" type="text" class="form-control">			
-		</div>
-	</div>
-	<div class="col-centered col-xs-4">
-		<button class="btn btn-info reBtn" (click)="refresh()">Reload Image</button>
-	</div>
+            <svg #mySVG id="mySVG" width="800" height="400" class="center">
+                <filter id="drop-shadow">
+                	 <!-- Drop Shadow Filter -->
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="2.0" />
+                    <feOffset dx="0" dy="4" result="offsetblur" />
+                    <feFlood flood-color="rgba(0,0,0,0.3)" />
+                    <feComposite in2="offsetblur" operator="in" />
+                    <feMerge>
+                        <feMergeNode/>
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                </filter>
+                <line x1="0" y1="50" x2="800" y2="50" style="stroke:black;stroke-width:2" />
+
+                <!-- Allows addition of individual block elements -->
+
+                <rect *ngFor="let block of svgItems" class="block" [attr.x]='block.x1' [attr.y]='block.y1' [attr.height]='block.bH' [attr.width]='block.bWidth' [attr.style]=block.color/>
+                <polygon *ngFor="let block of svgItems" [attr.points]='block.arrow' [attr.style]=block.color />
+                <text *ngFor="let block of svgItems" [attr.x]='block.labelX' [attr.y]='block.labelY' fill="black" [attr.transform]='block.rotate'>{{block.name}}</text>
+            </svg>
+            <br>
+            <button class="btn-info btn" (click)="SVGdownload()">Download</button>
+            <br>
+            <p><strong>NOTE: To use in PowerPoint, convert SVG to PDF here: <a href="https://cloudconvert.com/svg-to-pdf">https://cloudconvert.com/svg-to-pdf</a></strong></p>
+            <hr>
+        </div>
+        <div class="col-xs-4 col-md-2 col-centered">
+            <label for="upld">Upload GenBank File to Autofill</label>
+            <input class="center btn" name="upld" type="file" id="files" (change)="onChange($event)" />
+            <output id="list"></output>
+        </div>
+    </div>
+    <br>
+    <!-- SVG image options & Error message container -->
+    <div class="row row-centered">
+        <div class="col-centered col-xs-3 center">
+            <div class="input-group center">
+                <label for="maxLen">Max Length (Base Pairs)</label>
+                <input [(ngModel)]="maxLen" name="maxLen" type="text" class="form-control">
+            </div>
+        </div>
+        <div class="col-centered col-xs-3 center">
+            <div class="input-group center">
+                <label for="blockHeight">Block Height</label>
+                <input [(ngModel)]="blockHeight" name="blockHeight" type="text" class="form-control">
+            </div>
+        </div>
+        <div class="col-centered col-xs-3 center">
+            <div class="input-group center">
+                <label for="arrowP">Arrow Length</label>
+                <input [(ngModel)]="arrowP" name="arrowP" type="text" class="form-control">
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row row-centered">
+        <div class="col-xs-12 center">
+            <button class="btn btn-info reBtn" (click)="refresh()">Reload Image</button>
+        </div>
+        <div class="col-sm-10 col-xs-12 col-md-8 col-centered">
+            <div *ngIf="errShow" class="errM">
+                <h3>Warning:</h3>
+                <p>{{ error }}</p>
+            </div>
+        </div>
+    </div>
+    <br>
+	<hr>
+    <!-- Gene Addition -->
+    <div class="row row-centered">
+        <div class="col-centered col-xs-2">
+            <div class="input-group">
+                <input type="text" [(ngModel)]="tempGene.name" placeholder="Gene" class="form-control">
+            </div>
+        </div>
+        <div class="col-centered col-xs-2">
+            <div class="input-group">
+                <input type="text" [(ngModel)]="tempGene.length" placeholder="Length" class="form-control">
+            </div>
+        </div>
+        <div class="col-centered col-xs-2">
+            <div class="input-group">
+                <input type="text" [(ngModel)]="tempGene.color" placeholder="Color" class="form-control">
+            </div>
+        </div>
+        <div class="col-centered col-xs-2">
+            <div class="input-group">
+                <label for="direction">Direction</label>
+                <br>
+                <input type="radio" [(ngModel)]="tempGene.direction" name="direction" value="forward" checked/> Forward
+                <input type="radio" [(ngModel)]="tempGene.direction" name="direction" value="backward" /> Backward
+                <input type="radio" [(ngModel)]="tempGene.direction" name="direction" value="nonCoding" /> Non Coding
+            </div>
+        </div>
+        <div class="col-centered col-xs-1">
+            <label for="arrow">Arrow Only</label>
+            <input type="checkbox" [(ngModel)]="tempGene.arrow" name="arrow" value="true" />
+        </div>
+        <div class="col-centered col-xs-1">
+            <button class="btn btn-info" (click)="addGene()">Add</button>
+        </div>
+    </div>
+	<hr>
+    <!-- Individual gene editing -->
+    <div class="container-fluid" *ngFor="let gene of genes; let i = index">
+        <div class="row row-centered" *ngIf="edit==i">
+            <div class="col-centered col-xs-2">
+                <div class="input-group">
+                    <input type="text" [(ngModel)]="genes[i].name" placeholder="Gene" class="form-control">
+                </div>
+            </div>
+            <div class="col-centered col-xs-2">
+                <div class="input-group">
+                    <input type="text" [(ngModel)]="genes[i].length" placeholder="Length" class="form-control">
+                </div>
+            </div>
+            <div class="col-centered col-xs-2">
+                <div class="input-group">
+                    <input type="text" [(ngModel)]="genes[i].color" placeholder="Color" class="form-control">
+                </div>
+            </div>
+            <div class="col-centered col-xs-2">
+                <div class="input-group">
+                    <label for="direction">Direction</label>
+                    <br>
+                    <input type="radio" [(ngModel)]="genes[i].direction" name="directionUD" value="forward" checked/> Forward
+                    <input type="radio" [(ngModel)]="genes[i].direction" name="directionUD" value="backward" /> Backward
+                    <input type="radio" [(ngModel)]="genes[i].direction" name="directionUD" value="nonCoding" /> Non Coding
+                </div>
+            </div>
+            <div class="col-centered col-xs-1">
+                <label for="arrow">Arrow Only</label>
+                <input type="checkbox" [(ngModel)]="genes[i].arrow" name="arrow" value="true" />
+            </div>
+            <div class="col-centered col-xs-1">
+                <button class="btn btn-info" (click)="refresh()">Update</button>
+            </div>
+        </div>
+		<br><br>
+        <!-- Individual Genes listed -->
+        <div class="row row-centered" *ngIf="edit!=i">
+            <div class="col-centered col-xs-2 col-sm-3">
+                <div class="input-group">
+                    <p><strong>Gene:</strong> {{gene.name}}</p>
+                </div>
+            </div>
+            <div class="col-centered col-xs-2">
+                <div class="input-group">
+                    <p><strong>Length:</strong> {{gene.length}}</p>
+                </div>
+            </div>
+            <div class="col-centered col-xs-2">
+                <div class="input-group">
+                    <p><strong>Color:</strong> {{gene.color}}</p>
+                </div>
+            </div>
+            <div class="col-centered col-xs-2">
+                <div class="input-group">
+                    <p><strong>Direction:</strong> {{gene.direction}}</p>
+                </div>
+            </div>
+            <div class="col-centered col-xs-4 col-sm-2">
+                <button (click)="deleteBlock(i)" class="btn btn-danger">Delete</button>
+                <button class="btn btn-info" (click)="editBlock(i)">Edit</button>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <br>
+    <br>
+
 </div>
 <br>
-	<div class="container-fluid" *ngFor="let gene of genes; let i = index" >
-		<div class="row row-centered" *ngIf="edit==i">
-		<div class="col-centered col-xs-2">
-			<div class="input-group">
-				<input type="text" [(ngModel)]="genes[i].name" placeholder="Gene" class="form-control">
-			</div>
-		</div>
-		<div class="col-centered col-xs-2">
-			<div class="input-group">
-				<input type="text" [(ngModel)]="genes[i].length" placeholder="Length" class="form-control">
-			</div>
-		</div>
-		<div class="col-centered col-xs-2">
-			<div class="input-group">
-				<input type="text" [(ngModel)]="genes[i].color" placeholder="Color" class="form-control">
-			</div>
-		</div>
-		<div class="col-centered col-xs-2">
-			<div class="input-group">
-				<label for="direction">Direction</label><br>
-				<input type="radio" [(ngModel)]="genes[i].direction" name="directionUD" value="forward"  checked/> Forward 
-				<input type="radio" [(ngModel)]="genes[i].direction" name="directionUD" value="backward" /> Backward
-				<input type="radio" [(ngModel)]="genes[i].direction" name="directionUD" value="nonCoding" /> Non Coding
-			</div>
-		</div>
-		<div class="col-centered col-xs-1">
-			<label for="arrow">Arrow Only</label>
-			<input type="checkbox" [(ngModel)]="genes[i].arrow" name="arrow" value="true" />
-		</div>
-		<div class="col-centered col-xs-1">
-			<button class="btn btn-info" (click)="refresh()">Update</button>
-		</div>				
-		</div>
-		<div class="row row-centered" *ngIf="edit!=i">
-			
-		
-		<div class="col-centered col-xs-2 col-sm-3">
-			<div class="input-group">
-				<p><strong>Gene:</strong> {{gene.name}}</p>
-			</div>	
-		</div>
-
-		<div class="col-centered col-xs-2">
-			<div class="input-group">
-				<p><strong>Length:</strong> {{gene.length}}</p>
-			</div>
-		</div>
-
-		<div class="col-centered col-xs-2">
-			<div class="input-group">
-				<p><strong>Color:</strong> {{gene.color}}</p>
-			</div>
-		</div>
-		<div class="col-centered col-xs-2">
-			<div class="input-group">
-				<p><strong>Direction:</strong> {{gene.direction}}</p>
-			</div>
-		</div>
-		<div class="col-centered col-xs-4 col-sm-2">
-			<button (click)="deleteBlock(i)" class="btn btn-danger">Delete</button>
-			<button class="btn btn-info" (click)="editBlock(i)">Edit</button>
-		</div>
-		</div>
-		<hr>
-	</div>
-	<br><br>
-	<div class="row row-centered">
-
-		<div class="col-centered col-xs-2">
-			<div class="input-group">
-				<input type="text" [(ngModel)]="tempGene.name" placeholder="Gene" class="form-control">
-			</div>
-		</div>
-		<div class="col-centered col-xs-2">
-			<div class="input-group">
-				<input type="text" [(ngModel)]="tempGene.length" placeholder="Length" class="form-control">
-			</div>
-		</div>
-		<div class="col-centered col-xs-2">
-			<div class="input-group">
-				<input type="text" [(ngModel)]="tempGene.color" placeholder="Color" class="form-control">
-			</div>
-		</div>
-		<div class="col-centered col-xs-2">
-			<div class="input-group">
-				<label for="direction">Direction</label><br>
-				<input type="radio" [(ngModel)]="tempGene.direction" name="direction" value="forward"  checked/> Forward 
-				<input type="radio" [(ngModel)]="tempGene.direction" name="direction" value="backward" /> Backward
-				<input type="radio" [(ngModel)]="tempGene.direction" name="direction" value="nonCoding" /> Non Coding
-			</div>
-		</div>
-		<div class="col-centered col-xs-1">
-			<label for="arrow">Arrow Only</label>
-			<input type="checkbox" [(ngModel)]="tempGene.arrow" name="arrow" value="true" />
-		</div>
-		<div class="col-centered col-xs-1">
-			<button class="btn btn-info" (click)="addGene()">Add</button>
-		</div>	
-
-	</div>	
-</div>
-<br><br>
+<br>
 <hr>
+<!-- Footer -->
 <div class="container-fluid">
-	<div class="row footer">
-		<div class="col-centered col-xs-12">
-			<p>&#169; Samir Akre 2017 <br><a href="www.samirakre.com">www.samirakre.com</a></p>
-			
-		</div>
-	</div>
+    <div class="row footer">
+        <div class="col-centered col-xs-12">
+            <p>&#169; Samir Akre 2017
+                <strong><br><a href="http://www.samirakre.com" target="_blank">www.samirakre.com</a><br><br></strong>
+                <a href="https://www.linkedin.com/pub/samir-akre/7a/322/b74" target="_blank"><img src="pictures/li.png" height="50" width="50" alt="LinkedIn"></a>
+				<a href="https://www.facebook.com/SamirAkre" target="_blank"><img src="pictures/fb.png" height="50" width="50" alt="Facebook"></a>
+				<a href="https://twitter.com/samirakre" target="_blank"><img src="pictures/twit.png" height="50" width="50" alt="Twitter"></a>
+				<a href="https://github.com/Akre96" target="_blank"><img src="pictures/git.png" height="50" width="50" alt="Github"></a>
+				</p>
+        </div>
+    </div>
 </div>
