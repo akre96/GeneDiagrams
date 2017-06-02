@@ -41,6 +41,7 @@ After changing any of the above options the reload button must be hit.
 
 -- Gene names from GenBank files are the predicted function by default. Will be set to the Locus_tag if no predicted function, and if neither name is set to "No Name"
 
+-- I have no idea what would happen if you added a gene manually to an uploaded files diagram
 
 
 

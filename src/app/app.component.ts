@@ -196,6 +196,7 @@ export class AppComponent  {
 			var arrow=aX1+','+aY1+' '+aX1+','+aY2+' '+aX2+','+50 ;
 			gene.color='transparent'
 		}
+		// If uploaded file, selects only for certain positions if range inputted
 		if(this.files)
 		{
 			if((gene.pos[0]>=this.start)&&(gene.pos[1]<=this.end || !this.end))
