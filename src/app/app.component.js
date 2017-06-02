@@ -155,20 +155,40 @@ var AppComponent = (function () {
             var arrow = aX1 + ',' + aY1 + ' ' + aX1 + ',' + aY2 + ' ' + aX2 + ',' + 50;
             gene.color = 'transparent';
         }
-        var block = {
-            name: gene.name,
-            x1: x1,
-            bWidth: bWidth,
-            y1: y1,
-            bH: bH,
-            color: this.sanitizer.bypassSecurityTrustStyle('fill:' + gene.color + ';'),
-            arrow: arrow,
-            labelX: labelX,
-            labelY: labelY,
-            rotate: rotate
-        };
-        this.currentLen = this.currentLen + len;
-        this.svgItems.push(block);
+        if (this.files) {
+            if ((gene.pos[0] >= this.start) && (gene.pos[1] <= this.end || !this.end)) {
+                var block = {
+                    name: gene.name,
+                    x1: x1,
+                    bWidth: bWidth,
+                    y1: y1,
+                    bH: bH,
+                    color: this.sanitizer.bypassSecurityTrustStyle('fill:' + gene.color + ';'),
+                    arrow: arrow,
+                    labelX: labelX,
+                    labelY: labelY,
+                    rotate: rotate
+                };
+                this.currentLen = this.currentLen + len;
+                this.svgItems.push(block);
+            }
+        }
+        else {
+            var block = {
+                name: gene.name,
+                x1: x1,
+                bWidth: bWidth,
+                y1: y1,
+                bH: bH,
+                color: this.sanitizer.bypassSecurityTrustStyle('fill:' + gene.color + ';'),
+                arrow: arrow,
+                labelX: labelX,
+                labelY: labelY,
+                rotate: rotate
+            };
+            this.currentLen = this.currentLen + len;
+            this.svgItems.push(block);
+        }
     };
     // Removes gene from sequence when deleted, calls refresh to update SVG
     AppComponent.prototype.deleteBlock = function (i) {
@@ -187,12 +207,14 @@ var AppComponent = (function () {
     AppComponent.prototype.onChange = function (event) {
         var _this = this;
         // get file & create reader
-        var files = event.srcElement.files;
+        if (event) {
+            this.files = event.srcElement.files;
+            var init = 1;
+        }
         var reader = new FileReader();
         // Parses file and generates genes on readAsText call
         reader.onload = function (e) {
-            _this.files = reader.result;
-            var lines = _this.files.split("gene");
+            var lines = reader.result.split("gene");
             var genes = [];
             var lastGene = [];
             for (var line in lines) {
@@ -206,6 +228,10 @@ var AppComponent = (function () {
                         pos[1] = Number(pos[1]); // end base
                         var len = pos[1] - pos[0];
                         var name = lines[line].match(/\/product="+.{1,}/g);
+                        if (init) {
+                            _this.start = pos[0];
+                            init = 0;
+                        }
                         // if associated function, funciton used as name, otherwise locus_tag is used. If neither given name "no name"
                         if (name) {
                             name = name[0].slice(10, -1);
@@ -255,7 +281,8 @@ var AppComponent = (function () {
                         length: each[4],
                         color: 'black',
                         direction: 'nonCoding',
-                        arrow: false
+                        arrow: false,
+                        pos: [each[2], each[3]]
                     };
                     _this.genes.push(tGene);
                 }
@@ -264,13 +291,14 @@ var AppComponent = (function () {
                     length: each[1],
                     color: 'black',
                     direction: 'forward',
-                    arrow: false
+                    arrow: false,
+                    pos: [each[2], each[3]]
                 };
                 _this.genes.push(tGene);
             }
             _this.refresh();
         };
-        reader.readAsText(files[0]);
+        reader.readAsText(this.files[0]);
     };
     return AppComponent;
 }());

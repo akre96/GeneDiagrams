@@ -51,6 +51,11 @@
                 <label for="maxLen">Max Length (Base Pairs)</label>
                 <input [(ngModel)]="maxLen" name="maxLen" type="text" class="form-control">
             </div>
+            <div class="input-group center">
+                <label for="maxLen">Range (only for uploaded files)</label><br>
+                <input [(ngModel)]="start" name="Range" type="text" class="" placeholder="start position"> to
+                 <input [(ngModel)]="end" name="Range" type="text" class="" placeholder="end position">
+            </div>
         </div>
         <div class="col-centered col-xs-3 center">
             <div class="input-group center">

@@ -23,6 +23,8 @@ export class AppComponent  {
 	widthErr:number; 	// If arrow length is longer than a gene set to true
 	errShow:boolean;	// If error, show error message box
 	error:any;			// Stores error message
+	start:number;
+	end:number;
 
 	constructor(private sanitizer:DomSanitizer){
 		// Initialize Variables		
@@ -98,7 +100,6 @@ export class AppComponent  {
 		this.svgItems=[];
 		this.widthErr=0;
 		this.errShow=false;
-
 		// Generate new SVG
 		for(var gene of this.genes)
 		{
@@ -195,22 +196,44 @@ export class AppComponent  {
 			var arrow=aX1+','+aY1+' '+aX1+','+aY2+' '+aX2+','+50 ;
 			gene.color='transparent'
 		}
-
-
-		var block:Block={
-			name:gene.name,
-			x1:x1,
-			bWidth:bWidth,
-			y1:y1,
-			bH:bH,
-			color:this.sanitizer.bypassSecurityTrustStyle('fill:'+gene.color+';'),
-			arrow:arrow,
-			labelX:labelX,
-			labelY:labelY,
-			rotate:rotate			
+		if(this.files)
+		{
+			if((gene.pos[0]>=this.start)&&(gene.pos[1]<=this.end || !this.end))
+			{
+				var block:Block={
+					name:gene.name,
+					x1:x1,
+					bWidth:bWidth,
+					y1:y1,
+					bH:bH,
+					color:this.sanitizer.bypassSecurityTrustStyle('fill:'+gene.color+';'),
+					arrow:arrow,
+					labelX:labelX,
+					labelY:labelY,
+					rotate:rotate			
+				}
+				this.currentLen=this.currentLen+len;
+				this.svgItems.push(block)				
+			}			
 		}
-		this.currentLen=this.currentLen+len;
-		this.svgItems.push(block)
+		else
+		{
+			var block:Block={
+				name:gene.name,
+				x1:x1,
+				bWidth:bWidth,
+				y1:y1,
+				bH:bH,
+				color:this.sanitizer.bypassSecurityTrustStyle('fill:'+gene.color+';'),
+				arrow:arrow,
+				labelX:labelX,
+				labelY:labelY,
+				rotate:rotate			
+			}
+			this.currentLen=this.currentLen+len;
+			this.svgItems.push(block)			
+		}
+
 
 	}
 
@@ -235,18 +258,23 @@ export class AppComponent  {
 	onChange(event:any){
 
 		// get file & create reader
-	    var files = event.srcElement.files;
+		if(event)
+		{
+		this.files = event.srcElement.files;
+		var init=1;
+		}
+	    
 	    let reader=new FileReader();
 
 	    // Parses file and generates genes on readAsText call
 		reader.onload = (e) => {
-		    this.files=reader.result;
-		    var lines = this.files.split("gene");
+		    var lines = reader.result.split("gene");
 		    var genes=[];
 		    var lastGene=[]; 
+		    
 		    for( var line in lines) // go through each line of file
 		    {
-		    	
+
 		    	var match = lines[line].match(/[0-9]+\.\.+[0-9]*/g) // regex to get position of genes
 		    	var notFull = lines[line].match("ORGANISM"); // line with ORGANISM would create one gene for entire genome, not desired
 		    	if(match && !notFull)
@@ -259,7 +287,12 @@ export class AppComponent  {
 			    		pos[1]=Number(pos[1]); // end base
 			    		var len=pos[1]-pos[0];
 			    		var name = lines[line].match(/\/product="+.{1,}/g);
-
+			    		if(init)
+			    		{
+			    			this.start=pos[0];
+			    			init=0;
+			    		}
+	  	
 			    		// if associated function, funciton used as name, otherwise locus_tag is used. If neither given name "no name"
 			    		if(name) 
 			    		{
@@ -307,6 +340,7 @@ export class AppComponent  {
 				    		genes.push(gene);
 				    		lastGene=gene;
 			    		}
+			    		
 
 			    	}
 		    	}
@@ -327,7 +361,8 @@ export class AppComponent  {
 			    		length:each[4],
 			    		color:'black',
 			    		direction:'nonCoding',
-			    		arrow:false
+			    		arrow:false,
+			    		pos:[each[2],each[3]]
 			    	}
 			    	this.genes.push(tGene);		    		
 		    	}		    	
@@ -337,7 +372,8 @@ export class AppComponent  {
 		    		length:each[1],
 		    		color:'black',
 		    		direction:'forward',
-		    		arrow:false
+		    		arrow:false,
+		    		pos:[each[2],each[3]]
 		    	}
 		    	this.genes.push(tGene);
 
@@ -345,7 +381,7 @@ export class AppComponent  {
 		    this.refresh();
 		}
 
-		reader.readAsText(files[0]);
+		reader.readAsText(this.files[0]);
 
 	}
 }
@@ -357,6 +393,7 @@ export interface Gene{
 	color:string;
 	direction:string;
 	arrow:boolean;
+	pos?:any;
 
 }
 
