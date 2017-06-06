@@ -236,6 +236,9 @@ var AppComponent = (function () {
                         // if associated function, funciton used as name, otherwise locus_tag is used. If neither given name "no name"
                         if (name) {
                             name = name[0].slice(10, -1);
+                            var tag = lines[line].match(/\/locus_tag="+.{1,}/g);
+                            tag = tag[0].slice(12, -1);
+                            name = tag.concat(': ').concat(name);
                         }
                         else {
                             name = lines[line].match(/\/locus_tag="+.{1,}/g);

@@ -298,6 +298,9 @@ export class AppComponent  {
 			    		if(name) 
 			    		{
 			    			name = name[0].slice(10,-1);
+			    			var tag = lines[line].match(/\/locus_tag="+.{1,}/g);
+			    			tag = tag[0].slice(12,-1);
+			    			name = tag.concat(': ').concat(name);
 			    		}
 			    		else
 			    		{
