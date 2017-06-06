@@ -23,8 +23,8 @@ export class AppComponent  {
 	widthErr:number; 	// If arrow length is longer than a gene set to true
 	errShow:boolean;	// If error, show error message box
 	error:any;			// Stores error message
-	start:number;
-	end:number;
+	start:number;		// start position for genome parsing
+	end:number;			// end position for genome parsing
 
 	constructor(private sanitizer:DomSanitizer){
 		// Initialize Variables		
