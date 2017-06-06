@@ -15,6 +15,8 @@ To create a gene diagram you may either upload a genbank file or manually input 
 
 **Arrow Length:** Fixes length of arrows on blocks to be a percentage (0.00-100). Recommended to be 1 or below.  
 
+**Range:** For uploaded files, parse a certain range of the sequence for genes
+
 After changing any of the above options the reload button must be hit. 
 
 ### Individual Gene Options:
