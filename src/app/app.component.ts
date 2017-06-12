@@ -336,7 +336,7 @@ export class AppComponent  {
 			    			if(space>-10)
 			    			{
 			    				space=0;
-					    		var gene=[name,len,pos[0],pos[1],space];
+					    		var gene=[name,len,pos[0],pos[1],space,direction];
 					    		genes.push(gene);
 					    		lastGene=gene;			    				
 			    			}
@@ -347,7 +347,7 @@ export class AppComponent  {
 			    		}
 			    		// if no overlap, adds gene with spacer
 			    		else{
-				    		var gene=[name,len,pos[0],pos[1],space]
+				    		var gene=[name,len,pos[0],pos[1],space,direction]
 				    		genes.push(gene);
 				    		lastGene=gene;
 			    		}
@@ -382,7 +382,7 @@ export class AppComponent  {
 		    		name:each[0],
 		    		length:each[1],
 		    		color:'black',
-		    		direction: direction,
+		    		direction: each[5],
 		    		arrow:false,
 		    		pos:[each[2],each[3]]
 		    	}

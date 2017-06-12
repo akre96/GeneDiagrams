@@ -263,7 +263,7 @@ var AppComponent = (function () {
                         if (space < 0) {
                             if (space > -10) {
                                 space = 0;
-                                var gene = [name, len, pos[0], pos[1], space];
+                                var gene = [name, len, pos[0], pos[1], space, direction];
                                 genes.push(gene);
                                 lastGene = gene;
                             }
@@ -271,7 +271,7 @@ var AppComponent = (function () {
                             }
                         }
                         else {
-                            var gene = [name, len, pos[0], pos[1], space];
+                            var gene = [name, len, pos[0], pos[1], space, direction];
                             genes.push(gene);
                             lastGene = gene;
                         }
@@ -299,7 +299,7 @@ var AppComponent = (function () {
                     name: each[0],
                     length: each[1],
                     color: 'black',
-                    direction: direction,
+                    direction: each[5],
                     arrow: false,
                     pos: [each[2], each[3]]
                 };
