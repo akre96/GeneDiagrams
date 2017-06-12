@@ -220,6 +220,7 @@ var AppComponent = (function () {
             var lastGene = [];
             for (var line in lines) {
                 var match = lines[line].match(/[0-9]+\.\.+[0-9]*/g); // regex to get position of genes
+                var matchC = lines[line].match(/\([0-9]+\.\.+[0-9]*/g);
                 var notFull = lines[line].match("ORGANISM"); // line with ORGANISM would create one gene for entire genome, not desired
                 if (match && !notFull) {
                     // more than 2 matches indicates duplicates
@@ -248,6 +249,10 @@ var AppComponent = (function () {
                             else {
                                 name = 'No Name';
                             }
+                        }
+                        var direction = "backward";
+                        if (matchC) {
+                            direction = "forward";
                         }
                         var space = 0;
                         // Finds space between previous coding segment to generate non-coding block
@@ -294,7 +299,7 @@ var AppComponent = (function () {
                     name: each[0],
                     length: each[1],
                     color: 'black',
-                    direction: 'forward',
+                    direction: direction,
                     arrow: false,
                     pos: [each[2], each[3]]
                 };

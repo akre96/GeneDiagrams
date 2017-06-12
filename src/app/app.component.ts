@@ -277,6 +277,7 @@ export class AppComponent  {
 		    {
 
 		    	var match = lines[line].match(/[0-9]+\.\.+[0-9]*/g) // regex to get position of genes
+		    	var matchC = lines[line].match(/\([0-9]+\.\.+[0-9]*/g)
 		    	var notFull = lines[line].match("ORGANISM"); // line with ORGANISM would create one gene for entire genome, not desired
 		    	if(match && !notFull)
 		    	{
@@ -288,6 +289,7 @@ export class AppComponent  {
 			    		pos[1]=Number(pos[1]); // end base
 			    		var len=pos[1]-pos[0];
 			    		var name = lines[line].match(/\/product="+.{1,}/g);
+
 			    		if(init)
 			    		{
 			    			this.start=pos[0];
@@ -313,6 +315,11 @@ export class AppComponent  {
 			    				name='No Name'
 			    			}
 			    			
+			    		}
+			    		var direction = "backward";
+			    		if(matchC)
+			    		{
+			    			direction="forward";
 			    		}
 
 			    		var space = 0;
@@ -375,7 +382,7 @@ export class AppComponent  {
 		    		name:each[0],
 		    		length:each[1],
 		    		color:'black',
-		    		direction:'forward',
+		    		direction: direction,
 		    		arrow:false,
 		    		pos:[each[2],each[3]]
 		    	}
